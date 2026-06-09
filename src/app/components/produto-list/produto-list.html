@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th><th>Categoria</th><th>Preço</th><th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of produtos">
+      <td>{{ p.nome }}</td>
+      <td>{{ p.categoria }}</td>
+      <td>{{ p.preco | currency:'BRL' }}</td>
+      <td>
+        <button (click)="editar(p.id!)">Editar</button>
+        <button (click)="deletar(p.id!)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
