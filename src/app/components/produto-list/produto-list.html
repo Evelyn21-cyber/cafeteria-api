@@ -1,18 +1,46 @@
-<table>
-  <thead>
-    <tr>
-      <th>Nome</th><th>Categoria</th><th>Preço</th><th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let p of produtos">
-      <td>{{ p.nome }}</td>
-      <td>{{ p.categoria }}</td>
-      <td>{{ p.preco | currency:'BRL' }}</td>
-      <td>
-        <button (click)="editar(p.id!)">Editar</button>
-        <button (click)="deletar(p.id!)">Excluir</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="container">
+  <div class="cabecalho">
+    <div>
+      <h1>☕ Cardápio da Cafeteria</h1>
+      <p class="subtitulo">{{ produtos.length }} produto(s) cadastrado(s)</p>
+    </div>
+    <a routerLink="/produtos/novo" class="btn-novo">+ Novo produto</a>
+  </div>
+
+  <div class="alerta erro" *ngIf="erro">
+    {{ erro }} — verifique se o backend Java está rodando na porta 8080.
+  </div>
+
+  <div class="vazio" *ngIf="!erro && produtos.length === 0">
+    <p>Nenhum produto cadastrado ainda.</p>
+    <a routerLink="/produtos/novo" class="btn-novo">Cadastrar primeiro produto</a>
+  </div>
+
+  <table *ngIf="produtos.length > 0">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th>Preço</th>
+        <th>Disponível</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of produtos">
+        <td><strong>{{ p.nome }}</strong><br><span class="descricao">{{ p.descricao }}</span></td>
+        <td><span class="badge">{{ p.categoria }}</span></td>
+        <td>{{ p.preco | currency:'BRL' }}</td>
+        <td>
+          <span [class]="p.disponivel ? 'status sim' : 'status nao'">
+            {{ p.disponivel ? 'Sim' : 'Não' }}
+          </span>
+        </td>
+        <td class="acoes">
+          <button class="btn-editar" (click)="editar(p.id!)">Editar</button>
+          <button class="btn-excluir" (click)="deletar(p.id!)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h2>{{ editando ? 'Editar Produto' : 'Novo Produto' }}</h2>
+    </div>
+
+    <div class="alerta erro" *ngIf="erro">{{ erro }}</div>
+
+    <form (ngSubmit)="salvar()" #f="ngForm">
+      <div class="campo">
+        <label>Nome *</label>
+        <input
+          type="text"
+          [(ngModel)]="produto.nome"
+          name="nome"
+          required
+          placeholder="Ex: Espresso, Cappuccino..."
+        />
+      </div>
+
+      <div class="campo">
+        <label>Descrição</label>
+        <textarea
+          [(ngModel)]="produto.descricao"
+          name="descricao"
+          rows="3"
+          placeholder="Descrição do produto..."
+        ></textarea>
+      </div>
+
+      <div class="linha-dupla">
+        <div class="campo">
+          <label>Preço (R$) *</label>
+          <input
+            type="number"
+            [(ngModel)]="produto.preco"
+            name="preco"
+            required
+            min="0"
+            step="0.01"
+            placeholder="0,00"
+          />
+        </div>
+
+        <div class="campo">
+          <label>Categoria *</label>
+          <select [(ngModel)]="produto.categoria" name="categoria" required>
+            <option value="">Selecione...</option>
+            <option value="bebida">Bebida</option>
+            <option value="lanche">Lanche</option>
+            <option value="sobremesa">Sobremesa</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="campo-check">
+        <input
+          type="checkbox"
+          [(ngModel)]="produto.disponivel"
+          name="disponivel"
+          id="disponivel"
+        />
+        <label for="disponivel">Disponível no cardápio</label>
+      </div>
+
+      <div class="botoes">
+        <button type="button" class="btn-cancelar" (click)="cancelar()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-salvar" [disabled]="f.invalid">
+          {{ editando ? 'Salvar alterações' : 'Cadastrar produto' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

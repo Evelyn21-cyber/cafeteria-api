@@ -1,16 +1,20 @@
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { Produto } from '../../models/Produto';
 import { ProdutoService } from '../../services/produto';
-import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-produto-list',
-  templateUrl: './produto-list.component.html',
-  styleUrls: ['./produto-list.component.css']
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './produto-list.html',
+  styleUrl: './produto-list.css'
 })
 export class ProdutoList implements OnInit {
 
   produtos: Produto[] = [];
+  erro = '';
 
   constructor(
     private produtoService: ProdutoService,
@@ -22,8 +26,10 @@ export class ProdutoList implements OnInit {
   }
 
   carregar() {
-    this.produtoService.listar().subscribe(data => {
-      this.produtos = data;
+    this.erro = '';
+    this.produtoService.listar().subscribe({
+      next: (data) => this.produtos = data,
+      error: () => this.erro = 'Não foi possível conectar ao backend.'
     });
   }
 
@@ -33,8 +39,9 @@ export class ProdutoList implements OnInit {
 
   deletar(id: number) {
     if (confirm('Excluir este produto?')) {
-      this.produtoService.deletar(id).subscribe(() => {
-        this.carregar(); // atualiza a lista
+      this.produtoService.deletar(id).subscribe({
+        next: () => this.carregar(),
+        error: () => this.erro = 'Erro ao excluir produto.'
       });
     }
   }
